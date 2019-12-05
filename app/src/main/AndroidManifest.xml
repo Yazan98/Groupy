@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".screens.RegisterScreen"/>
+        <activity android:name=".screens.MainScreen" />
     </application>
 
 </manifest>

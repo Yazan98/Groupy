@@ -1,6 +1,8 @@
 package hu.grouper.app.logic
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import hu.grouper.app.data.models.LoginModel
 import hu.grouper.app.data.models.Profile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -15,16 +17,26 @@ import kotlinx.coroutines.withContext
 
 class ProfileRepository(private val listener: ProfileListener) {
 
-    suspend fun login(email: String, password: String) {
+    suspend fun login(model: LoginModel) {
         withContext(Dispatchers.IO) {
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(model.email, model.password)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             GlobalScope.launch {
                                 it.result?.let {
-                                    listener.onOperationSuccess(Profile(
-                                            id = it.user?.uid
-                                    ))
+                                    it.user?.uid?.let {
+                                        FirebaseFirestore.getInstance().collection("users")
+                                                .document(it).get().addOnCompleteListener {
+                                                    GlobalScope.launch {
+                                                        it.result?.let {
+                                                            listener.onOperationSuccess(Profile(
+                                                                    id = it.getString("id"),
+                                                                    accountType = it.getString("accountType")
+                                                            ))
+                                                        }
+                                                    }
+                                                }
+                                    }
                                 }
                             }
                         } else {
@@ -35,6 +47,35 @@ class ProfileRepository(private val listener: ProfileListener) {
                             }
                         }
                     }
+        }
+    }
+
+    suspend fun register(profile: Profile, password: String) {
+        withContext(Dispatchers.IO) {
+            profile.email?.let {
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(it, password)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                GlobalScope.launch {
+                                    it.result?.let {
+                                        it.user?.uid?.let {
+                                            profile.id = it
+                                            FirebaseFirestore.getInstance().collection("users")
+                                                    .document(it).set(profile).addOnCompleteListener {
+                                                        GlobalScope.launch { listener.onOperationSuccess(profile) }
+                                                    }
+                                        }
+                                    }
+                                }
+                            } else {
+                                GlobalScope.launch {
+                                    it.exception?.message?.let {
+                                        listener.onOperationFailed(it)
+                                    }
+                                }
+                            }
+                        }
+            }
         }
     }
 
