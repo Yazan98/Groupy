@@ -10,8 +10,10 @@ import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.VortexMessageDelegation
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.fragment_reg.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Created By : Yazan Tarifi
@@ -45,7 +47,7 @@ class RegisterFragment : VortexBaseFragment() {
                             input_email?.text.toString().isEmpty() -> VortexMessageDelegation().showShortMessage("Email Required", it)
                             input_bio?.text.toString().isEmpty() -> VortexMessageDelegation().showShortMessage("Bio Required", it)
                             else -> {
-                                loader.show()
+                                showLoading()
                                 GroupAdmin?.let {
                                     if (it.isChecked) {
                                         repository.register(Profile(
@@ -79,8 +81,13 @@ class RegisterFragment : VortexBaseFragment() {
 
     private val listener = object : ProfileRepository.ProfileListener {
         override suspend fun onOperationSuccess(profile: Profile) {
+            withContext(Dispatchers.Main) {
+                loader.dismiss()
+            }
+
             profile.id?.let { VortexPrefs.put("UserID" , it) }
             profile.accountType?.let { VortexPrefs.put("AccountType" , it) }
+            VortexPrefs.put("UserStatus" , true)
             activity?.let {
                 VortexMessageDelegation().showShortMessage("Welcome To Grouper" , it)
             }
@@ -88,10 +95,18 @@ class RegisterFragment : VortexBaseFragment() {
         }
 
         override suspend fun onOperationFailed(message: String) {
-            loader.dismiss()
+            withContext(Dispatchers.Main) {
+                loader.dismiss()
+            }
             activity?.let {
                 VortexMessageDelegation().showShortMessage(message , it)
             }
+        }
+    }
+
+    private suspend fun showLoading() {
+        withContext(Dispatchers.Main) {
+            loader.show()
         }
     }
 

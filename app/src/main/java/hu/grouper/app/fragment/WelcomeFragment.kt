@@ -1,6 +1,7 @@
 package hu.grouper.app.fragment
 
 import android.view.View
+import androidx.navigation.findNavController
 import hu.grouper.app.R
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.fragment_welcome.*
@@ -19,7 +20,7 @@ class WelcomeFragment : VortexBaseFragment() {
     override fun initScreen(view: View) {
         Continue?.apply {
             this.setOnClickListener {
-
+                findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
             }
         }
     }

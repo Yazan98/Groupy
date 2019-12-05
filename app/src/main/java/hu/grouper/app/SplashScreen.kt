@@ -1,5 +1,6 @@
 package hu.grouper.app
 
+import hu.grouper.app.screens.MainScreen
 import hu.grouper.app.screens.RegisterScreen
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.activity.VortexScreen
@@ -16,7 +17,7 @@ class SplashScreen : VortexScreen() {
         GlobalScope.launch {
             VortexPrefs.get("UserStatus", false)?.apply {
                 if ((this as Boolean)) {
-
+                    startScreen<MainScreen>(true)
                 } else {
                     startScreen<RegisterScreen>(true)
                 }

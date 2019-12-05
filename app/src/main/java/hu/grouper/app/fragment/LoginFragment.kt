@@ -1,6 +1,7 @@
 package hu.grouper.app.fragment
 
 import android.view.View
+import androidx.navigation.findNavController
 import hu.grouper.app.R
 import hu.grouper.app.data.models.LoginModel
 import hu.grouper.app.data.models.Profile
@@ -51,7 +52,7 @@ class LoginFragment : VortexBaseFragment() {
 
         RegisterAcc?.apply {
             this.setOnClickListener {
-
+                findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
         }
 
@@ -68,6 +69,7 @@ class LoginFragment : VortexBaseFragment() {
         override suspend fun onOperationSuccess(profile: Profile) {
             hideLoading()
             profile.id?.let { VortexPrefs.put("UserID" , it) }
+            VortexPrefs.put("UserStatus" , true)
             profile.accountType?.let { VortexPrefs.put("AccountType" , it) }
             activity?.let {
                 VortexMessageDelegation().showShortMessage("Welcome To Grouper" , it)
