@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import hu.grouper.app.R
 import hu.grouper.app.adapter.HomeMembersAdapter
 import hu.grouper.app.data.models.Profile
+import hu.grouper.app.data.models.Task
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -23,6 +24,8 @@ import kotlinx.coroutines.withContext
 
 class HomeFragment : VortexBaseFragment() {
 
+    var length = 1
+    private var tasks = ArrayList<Task>()
     private val homeAdapter: HomeMembersAdapter by lazy {
         HomeMembersAdapter()
     }
@@ -42,6 +45,7 @@ class HomeFragment : VortexBaseFragment() {
                             GlobalScope.launch {
                                 getAdminName(it.getString("name"), it.getString("adminID"))
                                 showMembersByIds(it.get("members") as List<String>)
+                                showProgressByGroupId(groupID)
                             }
                         }
                     }
@@ -90,6 +94,41 @@ class HomeFragment : VortexBaseFragment() {
                         }
             }
             hideLoading()
+        }
+    }
+
+    private suspend fun showProgressByGroupId(groupId: String) {
+        withContext(Dispatchers.IO) {
+            FirebaseFirestore.getInstance().collection("tasks")
+                    .whereEqualTo("groupId", groupId)
+                    .get().addOnCompleteListener {
+                        it.result?.let {
+                            for (doc in it.documents) {
+                                FirebaseFirestore.getInstance().collection("tasks")
+                                        .document(doc.id).get().addOnCompleteListener {
+                                            it.result?.let {
+                                                tasks.add(Task(
+                                                        id = it.getString("id"),
+                                                        name = it.getString("name"),
+                                                        groupId = it.getString("groupId"),
+                                                        status = it.getString("status"),
+                                                        userId = it.getString("userId")
+                                                ))
+
+                                                if (it.getString("status").equals("DONE")) {
+                                                    length += 1
+                                                }
+
+                                                progress?.apply {
+                                                    this.max = tasks.size
+                                                    this.progress = length
+                                                }
+                                            }
+                                        }
+                            }
+
+                        }
+                    }
         }
     }
 
