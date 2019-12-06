@@ -1,9 +1,11 @@
 package hu.grouper.app.logic
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import hu.grouper.app.data.models.LoginModel
 import hu.grouper.app.data.models.Profile
+import io.vortex.android.prefs.VortexPrefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -104,6 +106,22 @@ class ProfileRepository(private val listener: ProfileListener) {
                             }
                         }
                     }
+        }
+    }
+
+    suspend fun addLocationInfo(lastDetailsTaken: LatLng) {
+        withContext(Dispatchers.IO) {
+            VortexPrefs.get("UserID" , "")?.also {
+                val details = HashMap<String , Any>()
+                details["lat"] = lastDetailsTaken.latitude
+                details["lng"] = lastDetailsTaken.longitude
+                FirebaseFirestore.getInstance().collection("users").document(it as String)
+                        .update(details).addOnCompleteListener {
+                            GlobalScope.launch {
+                                listener.onOperationSuccess(Profile())
+                            }
+                        }
+            }
         }
     }
 

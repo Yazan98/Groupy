@@ -18,5 +18,21 @@
         <action android:id="@+id/action_loginFragment_to_registerFragment" app:destination="@id/registerFragment"/>
     </fragment>
     <fragment android:id="@+id/registerFragment" android:name="hu.grouper.app.fragment.RegisterFragment"
-              android:label="RegisterFragment"/>
+              android:label="RegisterFragment">
+        <action
+            android:id="@+id/action_registerFragment_to_locationTrackerFragment"
+            app:destination="@id/locationTrackerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationTrackerFragment"
+        android:name="hu.grouper.app.fragment.LocationTrackerFragment"
+        android:label="LocationTrackerFragment" >
+        <action
+            android:id="@+id/action_locationTrackerFragment_to_groupsFragment"
+            app:destination="@id/groupsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupsFragment"
+        android:name="hu.grouper.app.fragment.GroupsFragment"
+        android:label="GroupsFragment" />
 </navigation>

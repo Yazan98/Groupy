@@ -2,6 +2,7 @@ package hu.grouper.app.fragment
 
 import android.app.ProgressDialog
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import hu.grouper.app.R
 import hu.grouper.app.data.models.Profile
 import hu.grouper.app.logic.ProfileRepository
@@ -87,11 +88,14 @@ class RegisterFragment : VortexBaseFragment() {
 
             profile.id?.let { VortexPrefs.put("UserID" , it) }
             profile.accountType?.let { VortexPrefs.put("AccountType" , it) }
-            VortexPrefs.put("UserStatus" , true)
+//            VortexPrefs.put("UserStatus" , true)
             activity?.let {
                 VortexMessageDelegation().showShortMessage("Welcome To Grouper" , it)
             }
-            startScreen<MainScreen>(true)
+
+            withContext(Dispatchers.Main) {
+                findNavController().navigate(R.id.action_registerFragment_to_locationTrackerFragment)
+            }
         }
 
         override suspend fun onOperationFailed(message: String) {

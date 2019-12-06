@@ -14,5 +14,8 @@ data class Profile(
         var name: String? = "",
         var image: String? = "",
         var accountType: String? = "",
-        var bio: String? = ""
+        var bio: String? = "",
+        var lat: Double? = 0.0,
+        var lng: Double? = 0.0,
+        var groupID: String? = ""
 ) : Serializable

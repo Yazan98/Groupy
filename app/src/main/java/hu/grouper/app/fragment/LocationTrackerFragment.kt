@@ -1,5 +1,6 @@
 package hu.grouper.app.fragment
 
+import android.Manifest
 import android.content.*
 import android.location.Location
 import android.location.LocationManager
@@ -9,6 +10,7 @@ import android.os.IBinder
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
@@ -16,6 +18,10 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import hu.grouper.app.LocationUpdatesService
 import hu.grouper.app.R
+import hu.grouper.app.data.models.Profile
+import hu.grouper.app.logic.ProfileRepository
+import io.vortex.android.permissions.VortexPermissionCallback
+import io.vortex.android.permissions.VortexPermissions
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.fragment_location.*
 import kotlinx.coroutines.Dispatchers
@@ -29,8 +35,8 @@ import kotlinx.coroutines.withContext
  * Time : 12:15 PM
  */
 
-class LocationTrackerFragment : VortexBaseFragment() , GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback  {
+class LocationTrackerFragment : VortexBaseFragment(), GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var broadcastReceiver: BroadcastReceiver
@@ -42,6 +48,21 @@ class LocationTrackerFragment : VortexBaseFragment() , GoogleApiClient.Connectio
     private lateinit var locationService: LocationUpdatesService
     private var isLocationServiceActive: Boolean = false
     private var GpsStatus: Boolean = false
+    private val permission: VortexPermissions by lazy {
+        VortexPermissions()
+    }
+    private val repo: ProfileRepository by lazy {
+        ProfileRepository(object : ProfileRepository.ProfileListener {
+            override suspend fun onOperationSuccess(profile: Profile) {
+                withContext(Dispatchers.Main) {
+                    showMessage("Location Updated Successfully")
+                    findNavController().navigate(R.id.action_locationTrackerFragment_to_groupsFragment)
+                }
+            }
+
+            override suspend fun onOperationFailed(message: String) = Unit
+        })
+    }
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_location
@@ -51,15 +72,60 @@ class LocationTrackerFragment : VortexBaseFragment() , GoogleApiClient.Connectio
         mapFragment = (childFragmentManager).findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        GlobalScope.launch {
+            permission.registerPermissionCallback(object : VortexPermissionCallback {
+                override suspend fun onPermissionDenied(requestCode: Int, permissions: List<String>) {
+                    showMessage("Permission Not Generated")
+                }
+
+                override suspend fun onPermissionGenerated(requestCode: Int, permissions: List<String>) {
+                    getTheCurrentLocation()
+                }
+            })
+        }
+
         SelectLocation?.apply {
             this.setOnClickListener {
-                locationService.setCallback(locationCallbackListener)
-                locationService.requestLocationUpdates()
+                GlobalScope.launch {
+                    if (permission.isPermissionGenerated(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        locationService.setCallback(locationCallbackListener)
+                        locationService.requestLocationUpdates()
+                    } else {
+                        permission.requestPermission(Manifest.permission.ACCESS_FINE_LOCATION , 123)
+                    }
+                }
             }
         }
 
+
+
         GlobalScope.launch {
-            getTheCurrentLocation()
+            if (permission.isPermissionGenerated(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                getTheCurrentLocation()
+            } else {
+                permission.requestPermission(Manifest.permission.ACCESS_FINE_LOCATION , 123)
+            }
+        }
+
+        SelectThisAddress?.apply {
+            this.setOnClickListener {
+                GlobalScope.launch {
+                    if (permission.isPermissionGenerated(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        lastDetailsTaken?.let {
+                            repo.addLocationInfo(it)
+                        }
+                    } else {
+                        permission.requestPermission(Manifest.permission.ACCESS_FINE_LOCATION , 123)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        GlobalScope.launch {
+            permission.onRequestPermissionsResult(requestCode , permissions as Array<String>, grantResults.toTypedArray())
         }
     }
 

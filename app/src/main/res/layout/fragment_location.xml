@@ -13,6 +13,7 @@
         tools:context="com.vogella.android.maps.MapsActivity" />
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,10 +23,10 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:textColor="#fff"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Select Your Location"
-                android:layout_height="wrap_content" />
+                android:textColor="#fff" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -40,5 +41,32 @@
         android:src="@drawable/lcation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/track"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_btn"
+        android:text="Select This Address"
+        android:id="@+id/SelectThisAddress"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="#fff"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

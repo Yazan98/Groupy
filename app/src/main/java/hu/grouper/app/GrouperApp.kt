@@ -19,9 +19,10 @@ class GrouperApp : VortexApplication() {
         GlobalScope.launch {
             FirebaseApp.initializeApp(this@GrouperApp)
             VortexConfiguration.registerApplicationClass(this@GrouperApp)
-                .registerApplicationState(BuildConfig.DEBUG)
-                .registerCompatVector()
-                .registerVortexPrefsConfiguration(VortexPrefsDetails(packageName =this@GrouperApp.packageName))
+                    .registerApplicationState(BuildConfig.DEBUG)
+                    .registerCompatVector()
+                    .registerVortexPermissionsSettings()
+                    .registerVortexPrefsConfiguration(VortexPrefsDetails(packageName = this@GrouperApp.packageName))
         }
     }
 }
