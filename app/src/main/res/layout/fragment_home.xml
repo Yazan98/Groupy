@@ -26,58 +26,120 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="10dp"
-        app:cardCornerRadius="5dp"
-        app:cardUseCompatPadding="true"
+
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Header">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ScreenContent"
             android:layout_width="match_parent"
-            android:padding="10dp"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImageView3"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:src="@drawable/group"
-                app:civ_border_color="@color/colorPrimary"
-                app:civ_border_width="2dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="5dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/circleImageView3"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/group"
+                        app:civ_border_color="@color/colorPrimary"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:singleLine="true"
+                        android:textColor="#000"
+                        android:textSize="15dp"
+                        app:layout_constraintStart_toEndOf="@+id/circleImageView3"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/AdminName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintStart_toEndOf="@+id/circleImageView3"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:singleLine="true"
-                android:text="THe Group Name"
+                android:layout_marginTop="10dp"
+                android:text="Group Members"
                 android:textColor="#000"
-                android:textSize="15dp"
-                app:layout_constraintStart_toEndOf="@+id/circleImageView3"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/MembersGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5"></androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
-                android:text="Admin : Yazan"
-                app:layout_constraintStart_toEndOf="@+id/circleImageView3"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                android:text="Group Progress"
+                android:textColor="#000"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/MembersGroup" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </com.google.android.material.card.MaterialCardView>
+    </ScrollView>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:id="@+id/Loading"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/Header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
