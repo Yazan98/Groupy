@@ -99,4 +99,9 @@ class TasksFragment : VortexBaseFragment() {
             }
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        list.list.clear()
+    }
 }

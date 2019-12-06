@@ -48,6 +48,7 @@
             android:name=".screens.MainScreen"
             android:screenOrientation="portrait" />
         <activity android:name=".screens.NewTaskScreen" />
+        <activity android:name=".screens.ProfileScreen" />
 
         <service android:name=".LocationUpdatesService"
             android:enabled="true"/>

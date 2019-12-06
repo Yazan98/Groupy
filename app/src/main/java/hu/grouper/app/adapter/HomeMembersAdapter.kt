@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.row_profile.view.*
  * Time : 6:40 PM
  */
 
-class HomeMembersAdapter : VortexBaseAdapter<HomeMembersAdapter.Holder>() {
+class HomeMembersAdapter(private val listener: HomeMembersAdapter.Listener) : VortexBaseAdapter<HomeMembersAdapter.Holder>() {
 
     val items = ArrayList<Profile>()
 
@@ -41,7 +41,7 @@ class HomeMembersAdapter : VortexBaseAdapter<HomeMembersAdapter.Holder>() {
 
         holder.container?.apply {
             this.setOnClickListener {
-
+                listener.onClick(items[position])
             }
         }
     }
@@ -49,6 +49,10 @@ class HomeMembersAdapter : VortexBaseAdapter<HomeMembersAdapter.Holder>() {
     fun add(profile: Profile) {
         this.items.add(profile)
         notifyDataSetChanged()
+    }
+
+    interface Listener {
+        fun onClick(profile: Profile)
     }
 
     inner class Holder(view: View) : RecyclerView.ViewHolder(view) {

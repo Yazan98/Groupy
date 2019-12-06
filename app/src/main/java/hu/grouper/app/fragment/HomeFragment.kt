@@ -8,6 +8,7 @@ import hu.grouper.app.R
 import hu.grouper.app.adapter.HomeMembersAdapter
 import hu.grouper.app.data.models.Profile
 import hu.grouper.app.data.models.Task
+import hu.grouper.app.screens.ProfileScreen
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -27,7 +28,21 @@ class HomeFragment : VortexBaseFragment() {
     var length = 1
     private var tasks = ArrayList<Task>()
     private val homeAdapter: HomeMembersAdapter by lazy {
-        HomeMembersAdapter()
+        HomeMembersAdapter(object : HomeMembersAdapter.Listener {
+            override fun onClick(profile: Profile) {
+                GlobalScope.launch {
+                    startScreen<ProfileScreen>(false) {
+                        putExtra("name", profile.name)
+                        putExtra("email", profile.email)
+                        putExtra("id", profile.id)
+                        putExtra("bio", profile.bio)
+                        putExtra("accountType", profile.accountType)
+                        putExtra("lat", profile.lat)
+                        putExtra("lng", profile.lng)
+                    }
+                }
+            }
+        })
     }
 
     override fun getLayoutRes(): Int {
@@ -87,7 +102,9 @@ class HomeFragment : VortexBaseFragment() {
                                             name = it.getString("name"),
                                             bio = it.getString("bio"),
                                             lng = it.getDouble("lng"),
-                                            lat = it.getDouble("lat")
+                                            lat = it.getDouble("lat"),
+                                            email = it.getString("email"),
+                                            accountType = it.getString("accountType")
                                     ))
                                 }
                             }

@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.row_task.view.*
 
 class TaskAdapter : VortexBaseAdapter<TaskAdapter.Holder>() {
 
-    private val list = ArrayList<Task>()
+    val list = ArrayList<Task>()
 
     override fun getItemCount(): Int {
         return list.size
@@ -78,19 +78,24 @@ class TaskAdapter : VortexBaseAdapter<TaskAdapter.Holder>() {
                         updateDialog.findViewById<RadioButton>(R.id.NewButton).isChecked -> {
                             updateTaskStatus(list[position] , "NEW")
                             holder.card?.setBackgroundResource(R.drawable.bg_failed)
+                            list[position].status = "NEW"
                         }
                         updateDialog.findViewById<RadioButton>(R.id.ProgressButton).isChecked -> {
                             updateTaskStatus(list[position] , "IN_PROGRESS")
                             holder.card?.setBackgroundResource(R.drawable.bg_progress)
+                            list[position].status = "IN_PROGRESS"
                         }
                         else -> {
                             updateTaskStatus(list[position] , "DONE")
                             holder.card?.setBackgroundResource(R.drawable.bg_success)
+                            list[position].status = "DONE"
                         }
                     }
                     updateDialog.dismiss()
                 }
             }
+
+            updateDialog.show()
 
         }
     }
