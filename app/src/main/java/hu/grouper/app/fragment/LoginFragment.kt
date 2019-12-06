@@ -74,6 +74,9 @@ class LoginFragment : VortexBaseFragment() {
             activity?.let {
                 VortexMessageDelegation().showShortMessage("Welcome To Grouper" , it)
             }
+            profile.groupID?.let {
+                VortexPrefs.put("GroupID" , it)
+            }
 
             startScreen<MainScreen>(true)
         }

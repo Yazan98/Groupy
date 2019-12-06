@@ -137,6 +137,13 @@ class CreateNewGroupFragment : VortexBaseFragment() {
                         FirebaseFirestore.getInstance().collection("users")
                                 .document(adminId).update(items).addOnCompleteListener {
                                     GlobalScope.launch {
+                                        val result = HashMap<String , Any>()
+                                        result["groupID"] = id
+                                        for(spec in ids) {
+                                            FirebaseFirestore.getInstance().collection("users")
+                                                    .document(spec).update(result)
+                                        }
+                                        VortexPrefs.put("GroupID" , id)
                                         hideLoading()
                                         start()
                                     }
