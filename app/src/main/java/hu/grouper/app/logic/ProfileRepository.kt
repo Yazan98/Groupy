@@ -79,6 +79,34 @@ class ProfileRepository(private val listener: ProfileListener) {
         }
     }
 
+    suspend fun getProfileById(id: String) {
+        withContext(Dispatchers.IO) {
+            FirebaseFirestore.getInstance().collection("users")
+                    .document(id).get().addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            GlobalScope.launch {
+                                it.result?.let {
+                                    listener.onOperationSuccess(Profile(
+                                            id = it.getString("id"),
+                                            accountType = it.getString("accountType"),
+                                            bio = it.getString("bio"),
+                                            email = it.getString("email"),
+                                            name = it.getString("name"),
+                                            image = ""
+                                    ))
+                                }
+                            }
+                        } else {
+                            GlobalScope.launch {
+                                it.exception?.message?.let {
+                                    listener.onOperationFailed(it)
+                                }
+                            }
+                        }
+                    }
+        }
+    }
+
     interface ProfileListener {
         suspend fun onOperationSuccess(profile: Profile)
         suspend fun onOperationFailed(message: String)
