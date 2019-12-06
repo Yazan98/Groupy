@@ -97,8 +97,6 @@ class LocationTrackerFragment : VortexBaseFragment(), GoogleApiClient.Connection
             }
         }
 
-
-
         GlobalScope.launch {
             if (permission.isPermissionGenerated(Manifest.permission.ACCESS_FINE_LOCATION)) {
                 getTheCurrentLocation()
