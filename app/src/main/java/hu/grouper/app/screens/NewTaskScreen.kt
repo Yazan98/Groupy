@@ -49,7 +49,7 @@ class NewTaskScreen : VortexScreen() {
             val groupID = VortexPrefs.get("GroupID", "") as String
             val id = UUID.randomUUID().toString()
             val myId = VortexPrefs.get("UserID", "") as String
-            FirebaseFirestore.getInstance().collection("tasks").document()
+            FirebaseFirestore.getInstance().collection("tasks").document(id)
                     .set(Task(
                             id = id,
                             name = TaskNameField?.text.toString(),

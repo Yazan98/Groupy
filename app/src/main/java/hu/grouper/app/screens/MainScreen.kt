@@ -1,10 +1,13 @@
 package hu.grouper.app.screens
 
 import android.os.Bundle
+import androidx.viewpager.widget.ViewPager
 import hu.grouper.app.R
 import hu.grouper.app.adapter.ViewPagerAdapter
 import hu.grouper.app.fragment.EncryptionFragment
+import hu.grouper.app.fragment.HomeFragment
 import hu.grouper.app.fragment.ProfileFragment
+import hu.grouper.app.fragment.TasksFragment
 import io.vortex.android.ui.activity.VortexScreen
 import kotlinx.android.synthetic.main.screen_main.*
 
@@ -27,18 +30,45 @@ class MainScreen : VortexScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        adapter.addFragment(ProfileFragment() , "Profile")
+        adapter.addFragment(HomeFragment() , "Home")
+        adapter.addFragment(TasksFragment() , "Tasks")
         adapter.addFragment(EncryptionFragment() , "Encryption")
+        adapter.addFragment(ProfileFragment() , "Profile")
+
         MainViewPager?.let {
             it.adapter = adapter
         }
 
-        BottomNavController?.apply {
-            this.setOnNavigationItemSelectedListener {
-                when (it.itemId) {
+        MainViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) = Unit
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+            override fun onPageSelected(position: Int) {
+                BottomNavController.menu.getItem(position).isChecked = true
+            }
+        })
 
+        BottomNavController.setOnNavigationItemSelectedListener { p0 ->
+            when (p0.itemId) {
+                R.id.Home -> {
+                    MainViewPager.currentItem = 0
+                    true
                 }
-                true
+
+                R.id.Tasks -> {
+                    MainViewPager.currentItem = 1
+                    true
+                }
+
+                R.id.Encryption -> {
+                    MainViewPager.currentItem = 2
+                    true
+                }
+
+                R.id.Profile -> {
+                    MainViewPager.currentItem = 3
+                    true
+                }
+                else -> false
             }
         }
     }

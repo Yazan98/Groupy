@@ -1,6 +1,8 @@
 package hu.grouper.app.fragment
 
+import android.Manifest
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.navigation.findNavController
 import hu.grouper.app.R
 import io.vortex.android.ui.fragment.VortexBaseFragment
@@ -22,6 +24,14 @@ class WelcomeFragment : VortexBaseFragment() {
             this.setOnClickListener {
                 findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
             }
+        }
+
+        activity?.let {
+            ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                    123
+            )
         }
     }
 }
