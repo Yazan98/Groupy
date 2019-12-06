@@ -1,6 +1,9 @@
 package hu.grouper.app.screens
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.NonNull
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -65,6 +68,14 @@ class ProfileScreen : VortexScreen(), GoogleApiClient.ConnectionCallbacks,
                 }
             }
         }
+
+        ID?.apply {
+            this.setOnClickListener {
+                setClipboard(this@ProfileScreen , ID?.text.toString())
+                onBackPressed()
+            }
+        }
+
     }
 
     private fun addCurrentLocationMarker(latLng: LatLng) {
@@ -98,6 +109,19 @@ class ProfileScreen : VortexScreen(), GoogleApiClient.ConnectionCallbacks,
                 addCurrentLocationMarker(LatLng(res, bundle.getDouble("lng")))
             }
         }
+    }
+
+    @SuppressLint("ObsoleteSdkInt")
+    private fun setClipboard(context: Context, text: String) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.text.ClipboardManager
+            clipboard.text = text
+        } else {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("Copied Text", text)
+            clipboard.primaryClip = clip
+        }
+        Toast.makeText(context , "Copy Member ID" , Toast.LENGTH_SHORT).show()
     }
 
     override fun onConnected(p0: Bundle?) = Unit

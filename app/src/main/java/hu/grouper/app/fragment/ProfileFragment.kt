@@ -1,6 +1,7 @@
 package hu.grouper.app.fragment
 
 import android.view.View
+import com.google.firebase.auth.FirebaseAuth
 import hu.grouper.app.R
 import hu.grouper.app.data.models.Profile
 import hu.grouper.app.logic.ProfileRepository
@@ -78,6 +79,16 @@ class ProfileFragment : VortexBaseFragment() {
                 repository.getProfileById(it as String)
             }
         }
+
+        OutButton?.apply {
+            this.setOnClickListener {
+                GlobalScope.launch {
+                    VortexPrefs.put("UserStatus", false)
+                    FirebaseAuth.getInstance().signOut()
+                }
+            }
+        }
+
     }
 
     private suspend fun showLoading() {
