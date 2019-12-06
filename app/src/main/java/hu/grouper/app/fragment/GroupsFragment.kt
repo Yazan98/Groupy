@@ -3,6 +3,7 @@ package hu.grouper.app.fragment
 import android.annotation.SuppressLint
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import hu.grouper.app.adapter.GroupsAdapter
@@ -47,7 +48,7 @@ class GroupsFragment : VortexBaseFragment() {
 
         CreateNewGroup?.apply {
             this.setOnClickListener {
-
+                findNavController().navigate(R.id.action_groupsFragment_to_createNewGroupFragment)
             }
         }
     }
@@ -87,7 +88,7 @@ class GroupsFragment : VortexBaseFragment() {
                                     id = it.getString("id"),
                                     name = it.getString("name"),
                                     adminID = it.getString("adminID"),
-                                    members = it.get("members") as Array<String>
+                                    members = it.get("members") as List<String>
                             ))
                         }
                     }

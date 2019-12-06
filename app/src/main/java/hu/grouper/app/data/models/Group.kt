@@ -12,5 +12,5 @@ data class Group(
         var name: String? = "",
         var id: String? = "",
         var adminID: String? = "",
-        var members: Array<String>?
+        var members: List<String>
 ): Serializable

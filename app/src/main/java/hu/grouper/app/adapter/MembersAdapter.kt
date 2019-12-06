@@ -1,6 +1,7 @@
 package hu.grouper.app.adapter
 
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import hu.grouper.app.R
 import hu.grouper.app.data.models.Profile
@@ -15,7 +16,8 @@ import kotlinx.android.synthetic.main.row_profile.view.*
 
 class MembersAdapter : VortexBaseAdapter<MembersAdapter.Holder>() {
 
-    private val items = ArrayList<Profile>()
+    private var status: String = "Yes"
+    val items = ArrayList<Profile>()
     val mainSelected = ArrayList<Profile>()
 
     override fun getItemCount(): Int {
@@ -42,14 +44,20 @@ class MembersAdapter : VortexBaseAdapter<MembersAdapter.Holder>() {
 
         holder.container?.apply {
             this.setOnClickListener {
-                selected = if (selected == false) {
-                    mainSelected.add(items[position])
-                    holder.container?.setBackgroundResource(R.drawable.bg_selected)
-                    true
-                } else {
-                    mainSelected.remove(items[position])
-                    holder.container?.setBackgroundResource(R.drawable.bg_default)
-                    false
+                if (status.equals("Yes")) {
+                    selected = if (selected == false) {
+                        if (mainSelected.size > 3) {
+                            Toast.makeText(context, "You Can Just Pick 3 Members", Toast.LENGTH_SHORT).show()
+                        } else {
+                            mainSelected.add(items[position])
+                            holder.container?.setBackgroundResource(R.drawable.bg_selected)
+                        }
+                        true
+                    } else {
+                        mainSelected.remove(items[position])
+                        holder.container?.setBackgroundResource(R.drawable.bg_default)
+                        false
+                    }
                 }
             }
         }
@@ -64,5 +72,9 @@ class MembersAdapter : VortexBaseAdapter<MembersAdapter.Holder>() {
         val bio = view.BioF
         val name = view.textView2
         val container = view.ProfileContainer
+    }
+
+    fun setStatus(status: String) {
+        this.status = status
     }
 }

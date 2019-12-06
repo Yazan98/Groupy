@@ -10,6 +10,7 @@ import android.os.IBinder
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -73,6 +74,10 @@ class LocationTrackerFragment : VortexBaseFragment(), GoogleApiClient.Connection
         mapFragment.getMapAsync(this)
 
         GlobalScope.launch {
+            getTheCurrentLocation()
+        }
+
+        GlobalScope.launch {
             permission.registerPermissionCallback(object : VortexPermissionCallback {
                 override suspend fun onPermissionDenied(requestCode: Int, permissions: List<String>) {
                     showMessage("Permission Not Generated")
@@ -86,14 +91,8 @@ class LocationTrackerFragment : VortexBaseFragment(), GoogleApiClient.Connection
 
         SelectLocation?.apply {
             this.setOnClickListener {
-                GlobalScope.launch {
-                    if (permission.isPermissionGenerated(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        locationService.setCallback(locationCallbackListener)
-                        locationService.requestLocationUpdates()
-                    } else {
-                        permission.requestPermission(Manifest.permission.ACCESS_FINE_LOCATION , 123)
-                    }
-                }
+                locationService.setCallback(locationCallbackListener)
+                locationService.requestLocationUpdates()
             }
         }
 
@@ -101,19 +100,21 @@ class LocationTrackerFragment : VortexBaseFragment(), GoogleApiClient.Connection
             if (permission.isPermissionGenerated(Manifest.permission.ACCESS_FINE_LOCATION)) {
                 getTheCurrentLocation()
             } else {
-                permission.requestPermission(Manifest.permission.ACCESS_FINE_LOCATION , 123)
+                activity?.let {
+                    ActivityCompat.requestPermissions(
+                            it,
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                            123
+                    )
+                }
             }
         }
 
         SelectThisAddress?.apply {
             this.setOnClickListener {
                 GlobalScope.launch {
-                    if (permission.isPermissionGenerated(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        lastDetailsTaken?.let {
-                            repo.addLocationInfo(it)
-                        }
-                    } else {
-                        permission.requestPermission(Manifest.permission.ACCESS_FINE_LOCATION , 123)
+                    lastDetailsTaken?.let {
+                        repo.addLocationInfo(it)
                     }
                 }
             }

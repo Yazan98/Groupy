@@ -34,5 +34,13 @@
     <fragment
         android:id="@+id/groupsFragment"
         android:name="hu.grouper.app.fragment.GroupsFragment"
-        android:label="GroupsFragment" />
+        android:label="GroupsFragment" >
+        <action
+            android:id="@+id/action_groupsFragment_to_createNewGroupFragment"
+            app:destination="@id/createNewGroupFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createNewGroupFragment"
+        android:name="hu.grouper.app.fragment.CreateNewGroupFragment"
+        android:label="CreateNewGroupFragment" />
 </navigation>
