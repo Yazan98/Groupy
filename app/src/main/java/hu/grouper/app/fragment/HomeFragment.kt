@@ -8,6 +8,7 @@ import hu.grouper.app.R
 import hu.grouper.app.adapter.HomeMembersAdapter
 import hu.grouper.app.data.models.Profile
 import hu.grouper.app.data.models.Task
+import hu.grouper.app.screens.AboutUsScreen
 import hu.grouper.app.screens.ProfileScreen
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.fragment.VortexBaseFragment
@@ -16,6 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import mehdi.sakout.aboutpage.AboutPage
+import mehdi.sakout.aboutpage.Element
 
 /**
  * Created By : Yazan Tarifi
@@ -64,6 +67,14 @@ class HomeFragment : VortexBaseFragment() {
                             }
                         }
                     }
+        }
+
+        AboutUsButton?.apply {
+            this.setOnClickListener {
+                GlobalScope.launch {
+                    startScreen<AboutUsScreen>(false)
+                }
+            }
         }
 
         activity?.let {

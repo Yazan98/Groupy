@@ -59,6 +59,8 @@ dependencies {
     implementation "io.vortex:vortex-firebase-ktx:${final_version}"
     implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0'
     implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0'
+    implementation 'com.github.medyo:android-about-page:1.2.5'
+
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
