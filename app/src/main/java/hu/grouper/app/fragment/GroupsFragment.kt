@@ -6,9 +6,11 @@ import android.widget.Toast
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
-import hu.grouper.app.adapter.GroupsAdapter
 import hu.grouper.app.R
+import hu.grouper.app.adapter.GroupsAdapter
 import hu.grouper.app.data.models.Group
+import hu.grouper.app.screens.MainScreen
+import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.groups_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +27,15 @@ import kotlinx.coroutines.withContext
 class GroupsFragment : VortexBaseFragment() {
 
     private val mainAdapter: GroupsAdapter by lazy {
-        GroupsAdapter()
+        GroupsAdapter(object : GroupsAdapter.GroupListener {
+            override suspend fun onGroupSuccess() {
+                withContext(Dispatchers.Main) {
+                    activity?.let {
+                        Toast.makeText(it, "The Request Sent Perfectly", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
     }
 
     override fun getLayoutRes(): Int {
@@ -36,6 +46,12 @@ class GroupsFragment : VortexBaseFragment() {
     override fun initScreen(view: View) {
         GlobalScope.launch {
             getAllGroups()
+            val type = VortexPrefs.get("AccountType", "") as String
+            if (!type.equals("ADMIN")) {
+                CreateNewGroup?.let {
+                    it.text = "Finish"
+                }
+            }
         }
 
         activity?.let {
@@ -48,7 +64,13 @@ class GroupsFragment : VortexBaseFragment() {
 
         CreateNewGroup?.apply {
             this.setOnClickListener {
-                findNavController().navigate(R.id.action_groupsFragment_to_createNewGroupFragment)
+                if (this.text.toString().equals("Finish")) {
+                    GlobalScope.launch {
+                        startScreen<MainScreen>(true)
+                    }
+                } else {
+                    findNavController().navigate(R.id.action_groupsFragment_to_createNewGroupFragment)
+                }
             }
         }
     }

@@ -33,7 +33,10 @@ class ProfileRepository(private val listener: ProfileListener) {
                                                         it.result?.let {
                                                             listener.onOperationSuccess(Profile(
                                                                     id = it.getString("id"),
-                                                                    accountType = it.getString("accountType")
+                                                                    accountType = it.getString("accountType"),
+                                                                    name = it.getString("name"),
+                                                                    email = it.getString("email"),
+                                                                    groupID = it.getString("groupID")
                                                             ))
                                                         }
                                                     }

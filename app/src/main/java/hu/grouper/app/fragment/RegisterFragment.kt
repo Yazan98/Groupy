@@ -88,6 +88,9 @@ class RegisterFragment : VortexBaseFragment() {
 
             profile.id?.let { VortexPrefs.put("UserID" , it) }
             profile.accountType?.let { VortexPrefs.put("AccountType" , it) }
+            profile.name?.let {
+                VortexPrefs.put("Name" , it)
+            }
 //            VortexPrefs.put("UserStatus" , true)
             activity?.let {
                 VortexMessageDelegation().showShortMessage("Welcome To Grouper" , it)

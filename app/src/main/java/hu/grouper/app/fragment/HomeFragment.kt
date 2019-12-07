@@ -189,4 +189,10 @@ class HomeFragment : VortexBaseFragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        homeAdapter.items.clear()
+        tasks.clear()
+    }
+
 }

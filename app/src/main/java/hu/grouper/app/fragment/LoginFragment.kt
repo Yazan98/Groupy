@@ -78,6 +78,10 @@ class LoginFragment : VortexBaseFragment() {
                 VortexPrefs.put("GroupID" , it)
             }
 
+            profile.name?.let {
+                VortexPrefs.put("Name" , it)
+            }
+
             startScreen<MainScreen>(true)
         }
     }

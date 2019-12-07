@@ -11,8 +11,10 @@ import hu.grouper.app.screens.NewTaskScreen
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.fragment_tasks.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Created By : Yazan Tarifi
@@ -35,9 +37,7 @@ class TasksFragment : VortexBaseFragment() {
             VortexPrefs.get("AccountType", "")?.also {
                 (it as String).let {
                     if (it.equals("ADMIN")) {
-                        AddNewTask?.let {
-                            it.visibility = View.VISIBLE
-                        }
+                        show()
                     }
                 }
             }
@@ -96,6 +96,14 @@ class TasksFragment : VortexBaseFragment() {
                 GlobalScope.launch {
                     startScreen<NewTaskScreen>(false)
                 }
+            }
+        }
+    }
+
+    private suspend fun show() {
+        withContext(Dispatchers.Main) {
+            AddNewTask?.let {
+                it.visibility = View.VISIBLE
             }
         }
     }
