@@ -60,7 +60,7 @@ dependencies {
     implementation 'android.arch.navigation:navigation-fragment-ktx:1.0.0'
     implementation 'android.arch.navigation:navigation-ui-ktx:1.0.0'
     implementation 'com.github.medyo:android-about-page:1.2.5'
-
+//    implementation "com.mikepenz:materialdrawer:8.0.0-a01"
 
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"

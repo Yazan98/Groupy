@@ -50,6 +50,7 @@
         <activity android:name=".screens.NewTaskScreen" />
         <activity android:name=".screens.ProfileScreen" />
         <activity android:name=".screens.AboutUsScreen" />
+        <activity android:name=".screens.MeetingRoomScreen"/>
 
         <service android:name=".LocationUpdatesService"
             android:enabled="true"/>

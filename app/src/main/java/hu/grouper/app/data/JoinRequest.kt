@@ -1,4 +1,4 @@
-package hu.grouper.app.adapter
+package hu.grouper.app.data
 
 import java.io.Serializable
 

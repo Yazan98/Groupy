@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import hu.grouper.app.R
+import hu.grouper.app.data.JoinRequest
 import hu.grouper.app.data.models.Group
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.utils.random.VortexBaseAdapter
@@ -114,12 +115,14 @@ class GroupsAdapter(private val listener: GroupListener) : VortexBaseAdapter<Gro
             val userId = VortexPrefs.get("UserID", "") as String
             val id = UUID.randomUUID().toString()
             FirebaseFirestore.getInstance().collection("requests")
-                    .document().set(JoinRequest(
-                            id = id,
-                            name = name,
-                            userId = userId,
-                            groupID = items[position].id
-                    )).addOnCompleteListener {
+                    .document().set(
+                    JoinRequest(
+                        id = id,
+                        name = name,
+                        userId = userId,
+                        groupID = items[position].id
+                    )
+                ).addOnCompleteListener {
                         GlobalScope.launch {
                             listener.onGroupSuccess()
                         }

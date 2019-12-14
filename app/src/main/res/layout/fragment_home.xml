@@ -12,6 +12,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
+            android:id="@+id/HomeToolbar"
             android:layout_height="wrap_content">
 
             <TextView
@@ -39,7 +40,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="15dp">
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/materialCardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,7 +49,8 @@
                 app:cardCornerRadius="5dp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -89,7 +91,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/textView5"
@@ -136,18 +138,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/HEHEHE" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/AboutUsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="4dp"
-                android:src="@drawable/info"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/progress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

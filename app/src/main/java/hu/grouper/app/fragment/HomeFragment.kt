@@ -9,6 +9,7 @@ import hu.grouper.app.adapter.HomeMembersAdapter
 import hu.grouper.app.data.models.Profile
 import hu.grouper.app.data.models.Task
 import hu.grouper.app.screens.AboutUsScreen
+import hu.grouper.app.screens.MeetingRoomScreen
 import hu.grouper.app.screens.ProfileScreen
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.fragment.VortexBaseFragment
@@ -69,20 +70,54 @@ class HomeFragment : VortexBaseFragment() {
                     }
         }
 
-        AboutUsButton?.apply {
-            this.setOnClickListener {
-                GlobalScope.launch {
-                    startScreen<AboutUsScreen>(false)
-                }
-            }
-        }
-
         activity?.let {
             MembersGroup?.apply {
                 this.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
                 this.adapter = homeAdapter
                 (this.adapter as HomeMembersAdapter).context = it
             }
+        }
+
+        activity?.apply {
+//            val item1 = PrimaryDrawerItem().withIdentifier(1).withName("Home")
+//            val item2 = SecondaryDrawerItem().withIdentifier(2).withName("Meeting Room")
+//            val item3 = SecondaryDrawerItem().withIdentifier(3).withName("Chat Room")
+//            val item4 = SecondaryDrawerItem().withIdentifier(4).withName("About Application")
+
+//            HomeToolbar?.let {
+//                result = DrawerBuilder()
+//                    .withActivity(this)
+//                    .withToolbar(it)
+//                    .addDrawerItems(
+//                        item1,
+//                        item2,
+//                        item3,
+//                        item4
+//                    )
+//                    .withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener {
+//                        override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
+//                            when (position) {
+//                                3 -> {
+//                                    GlobalScope.launch {
+//                                        startScreen<AboutUsScreen>(false)
+//                                    }
+//                                }
+//
+//                                0 -> {
+////                                    result.closeDrawer()
+//                                }
+//
+//                                1 -> {
+//                                    GlobalScope.launch {
+//                                        startScreen<MeetingRoomScreen>(false)
+//                                    }
+//                                }
+//                            }
+//                            return false
+//                        }
+//                    })
+//                    .build()
+//            }
         }
     }
 
@@ -202,7 +237,7 @@ class HomeFragment : VortexBaseFragment() {
 
     override fun onStop() {
         super.onStop()
-        homeAdapter.items.clear()
+//        homeAdapter.items.clear()
         tasks.clear()
     }
 

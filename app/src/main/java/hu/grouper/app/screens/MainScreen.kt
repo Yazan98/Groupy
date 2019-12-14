@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
 import hu.grouper.app.R
 import hu.grouper.app.adapter.ViewPagerAdapter
-import hu.grouper.app.fragment.EncryptionFragment
-import hu.grouper.app.fragment.HomeFragment
-import hu.grouper.app.fragment.ProfileFragment
-import hu.grouper.app.fragment.TasksFragment
+import hu.grouper.app.fragment.*
 import io.vortex.android.ui.activity.VortexScreen
 import kotlinx.android.synthetic.main.screen_main.*
 
@@ -32,7 +29,7 @@ class MainScreen : VortexScreen() {
 
         adapter.addFragment(HomeFragment() , "Home")
         adapter.addFragment(TasksFragment() , "Tasks")
-        adapter.addFragment(EncryptionFragment() , "Encryption")
+        adapter.addFragment(OptionsFragment() , "Encryption")
         adapter.addFragment(ProfileFragment() , "Profile")
 
         MainViewPager?.let {
