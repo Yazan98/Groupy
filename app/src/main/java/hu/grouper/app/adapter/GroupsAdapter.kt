@@ -51,11 +51,11 @@ class GroupsAdapter(private val listener: GroupListener) : VortexBaseAdapter<Gro
 
         if (items[position].members?.size!! < 4) {
             holder.Card?.let {
-                it.setBackgroundResource(R.drawable.bg_failed)
+                it.setBackgroundResource(R.drawable.bg_success)
             }
         } else {
             holder.Card?.let {
-                it.setBackgroundResource(R.drawable.bg_success)
+                it.setBackgroundResource(R.drawable.bg_failed)
             }
         }
 

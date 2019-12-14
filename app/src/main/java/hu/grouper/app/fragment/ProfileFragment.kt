@@ -3,6 +3,7 @@ package hu.grouper.app.fragment
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import hu.grouper.app.R
+import hu.grouper.app.SplashScreen
 import hu.grouper.app.data.models.Profile
 import hu.grouper.app.logic.ProfileRepository
 import io.vortex.android.prefs.VortexPrefs
@@ -85,6 +86,7 @@ class ProfileFragment : VortexBaseFragment() {
                 GlobalScope.launch {
                     VortexPrefs.put("UserStatus", false)
                     FirebaseAuth.getInstance().signOut()
+                    startScreen<SplashScreen>(true)
                 }
             }
         }
