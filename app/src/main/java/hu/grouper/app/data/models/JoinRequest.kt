@@ -1,4 +1,4 @@
-package hu.grouper.app.data
+package hu.grouper.app.data.models
 
 import java.io.Serializable
 

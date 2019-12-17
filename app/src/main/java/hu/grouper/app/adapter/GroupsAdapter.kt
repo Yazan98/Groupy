@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import hu.grouper.app.R
-import hu.grouper.app.data.JoinRequest
+import hu.grouper.app.data.models.JoinRequest
 import hu.grouper.app.data.models.Group
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.utils.random.VortexBaseAdapter

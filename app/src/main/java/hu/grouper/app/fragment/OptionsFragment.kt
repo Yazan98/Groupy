@@ -3,6 +3,7 @@ package hu.grouper.app.fragment
 import android.view.View
 import hu.grouper.app.R
 import hu.grouper.app.screens.AboutUsScreen
+import hu.grouper.app.screens.ChatScreen
 import hu.grouper.app.screens.MeetingRoomScreen
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.fragment_options.*
@@ -41,7 +42,7 @@ class OptionsFragment : VortexBaseFragment() {
         CharRoom?.let {
             it.setOnClickListener {
                 GlobalScope.launch {
-                    startScreen<AboutUsScreen>(false)
+                    startScreen<ChatScreen>(false)
                 }
             }
         }
