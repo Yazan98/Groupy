@@ -58,6 +58,21 @@ class RequestsAdapter : VortexBaseAdapter<RequestsAdapter.Holder>() {
                     data.remove(data[position])
                     notifyDataSetChanged()
                 }
+
+                data[position].groupID?.let { id ->
+                    val result = ArrayList<String>()
+                    FirebaseFirestore.getInstance().collection("groups")
+                            .document(id).get().addOnCompleteListener {
+                                it.result?.let {
+                                    result.addAll(it.get("members") as List<String>)
+                                    result.add(data[position].userId!!)
+                                    val trans = HashMap<String, Any>()
+                                    trans.put("members", result)
+                                    FirebaseFirestore.getInstance().collection("groups")
+                                            .document(id).update(trans)
+                                }
+                            }
+                }
             }
         }
     }

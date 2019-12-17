@@ -49,8 +49,12 @@ class MembersAdapter : VortexBaseAdapter<MembersAdapter.Holder>() {
                         if (mainSelected.size > 3) {
                             Toast.makeText(context, "You Can Just Pick 3 Members", Toast.LENGTH_SHORT).show()
                         } else {
-                            mainSelected.add(items[position])
-                            holder.container?.setBackgroundResource(R.drawable.bg_selected)
+                            if (items[position].groupID.isNullOrEmpty()) {
+                                mainSelected.add(items[position])
+                                holder.container?.setBackgroundResource(R.drawable.bg_selected)
+                            } else {
+                                Toast.makeText(context, "You Can't Pick This User Because he's At Group", Toast.LENGTH_SHORT).show()
+                            }
                         }
                         true
                     } else {

@@ -105,7 +105,8 @@ class CreateNewGroupFragment : VortexBaseFragment() {
                                             membersAdapter.add(Profile(
                                                     id = it.getString("id"),
                                                     name = it.getString("name"),
-                                                    bio = it.getString("bio")
+                                                    bio = it.getString("bio"),
+                                                    groupID = it.getString("groupID")
                                             ))
                                         }
                                     }

@@ -8,8 +8,6 @@ import hu.grouper.app.R
 import hu.grouper.app.adapter.HomeMembersAdapter
 import hu.grouper.app.data.models.Profile
 import hu.grouper.app.data.models.Task
-import hu.grouper.app.screens.AboutUsScreen
-import hu.grouper.app.screens.MeetingRoomScreen
 import hu.grouper.app.screens.ProfileScreen
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.fragment.VortexBaseFragment
@@ -18,8 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import mehdi.sakout.aboutpage.AboutPage
-import mehdi.sakout.aboutpage.Element
 
 /**
  * Created By : Yazan Tarifi
@@ -56,18 +52,34 @@ class HomeFragment : VortexBaseFragment() {
     @SuppressLint("WrongConstant")
     override fun initScreen(view: View) {
         GlobalScope.launch {
-            showLoading()
+
             val groupID = VortexPrefs.get("GroupID", "") as String
-            FirebaseFirestore.getInstance().collection("groups").document(groupID)
-                    .get().addOnCompleteListener {
-                        it.result?.let {
-                            GlobalScope.launch {
-                                getAdminName(it.getString("name"), it.getString("adminID"))
-                                showMembersByIds(it.get("members") as List<String>)
-                                showProgressByGroupId(groupID)
+            val userId = VortexPrefs.get("UserID", "") as String
+            if (groupID.equals("")) {
+                hideContent()
+                showAcceptStatus()
+                FirebaseFirestore.getInstance().collection("users").document(userId)
+                        .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                            if (documentSnapshot?.getString("groupID")!!.isNotEmpty()) {
+                                GlobalScope.launch {
+                                    VortexPrefs.put("GroupID", documentSnapshot?.getString("groupID")!!)
+                                    restart()
+                                }
                             }
                         }
-                    }
+            } else {
+                showLoading()
+                FirebaseFirestore.getInstance().collection("groups").document(groupID)
+                        .get().addOnCompleteListener {
+                            it.result?.let {
+                                GlobalScope.launch {
+                                    getAdminName(it.getString("name"), it.getString("adminID"))
+                                    showMembersByIds(it.get("members") as List<String>)
+                                    showProgressByGroupId(groupID)
+                                }
+                            }
+                        }
+            }
         }
 
         activity?.let {
@@ -78,46 +90,13 @@ class HomeFragment : VortexBaseFragment() {
             }
         }
 
-        activity?.apply {
-//            val item1 = PrimaryDrawerItem().withIdentifier(1).withName("Home")
-//            val item2 = SecondaryDrawerItem().withIdentifier(2).withName("Meeting Room")
-//            val item3 = SecondaryDrawerItem().withIdentifier(3).withName("Chat Room")
-//            val item4 = SecondaryDrawerItem().withIdentifier(4).withName("About Application")
+    }
 
-//            HomeToolbar?.let {
-//                result = DrawerBuilder()
-//                    .withActivity(this)
-//                    .withToolbar(it)
-//                    .addDrawerItems(
-//                        item1,
-//                        item2,
-//                        item3,
-//                        item4
-//                    )
-//                    .withOnDrawerItemClickListener(object : Drawer.OnDrawerItemClickListener {
-//                        override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
-//                            when (position) {
-//                                3 -> {
-//                                    GlobalScope.launch {
-//                                        startScreen<AboutUsScreen>(false)
-//                                    }
-//                                }
-//
-//                                0 -> {
-////                                    result.closeDrawer()
-//                                }
-//
-//                                1 -> {
-//                                    GlobalScope.launch {
-//                                        startScreen<MeetingRoomScreen>(false)
-//                                    }
-//                                }
-//                            }
-//                            return false
-//                        }
-//                    })
-//                    .build()
-//            }
+    private suspend fun restart() {
+        withContext(Dispatchers.Main) {
+            activity?.let {
+                it.recreate()
+            }
         }
     }
 
@@ -230,6 +209,22 @@ class HomeFragment : VortexBaseFragment() {
             }
 
             ScreenContent?.let {
+                it.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private suspend fun hideContent() {
+        withContext(Dispatchers.Main) {
+            ScreenContent?.let {
+                it.visibility = View.GONE
+            }
+        }
+    }
+
+    private suspend fun showAcceptStatus() {
+        withContext(Dispatchers.Main) {
+            ErrorView?.let {
                 it.visibility = View.VISIBLE
             }
         }

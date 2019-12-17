@@ -139,6 +139,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/HEHEHE" />
 
+            <include
+                layout="@layout/accept_screen"
+                android:visibility="gone"
+                android:id="@+id/ErrorView"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
