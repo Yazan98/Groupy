@@ -12,5 +12,6 @@ data class JoinRequest(
         var id: String? = "",
         var name: String? = "",
         var userId: String? = "",
-        var groupID: String? = ""
+        var groupID: String? = "",
+        var docuementId: String? = ""
 ): Serializable
