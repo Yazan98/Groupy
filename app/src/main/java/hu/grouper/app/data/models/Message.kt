@@ -2,7 +2,8 @@ package hu.grouper.app.data.models
 
 import com.stfalcon.chatkit.commons.models.IMessage
 import com.stfalcon.chatkit.commons.models.IUser
-import java.sql.Date
+import com.stfalcon.chatkit.commons.models.MessageContentType
+import java.util.*
 
 /**
  * Created By : Yazan Tarifi
@@ -11,12 +12,13 @@ import java.sql.Date
  */
 
 data class Message(
-    var messageId: String = "",
-    var name: String = "",
-    var message: String = "",
-    var date: Date,
-    var senderId: String = ""
+        var messageId: String = "",
+        var senderName: String = "",
+        var message: String,
+        var date: Date,
+        var senderId: String = ""
 ): IMessage {
+
     override fun getId(): String {
         return messageId
     }
@@ -32,7 +34,7 @@ data class Message(
             }
 
             override fun getName(): String {
-                return name
+                return senderName
             }
 
             override fun getId(): String {
