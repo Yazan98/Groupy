@@ -55,8 +55,6 @@ class RequestsAdapter : VortexBaseAdapter<RequestsAdapter.Holder>() {
                             .document(it).update(result)
 
                     Toast.makeText(context, "User Has Been Accepted", Toast.LENGTH_SHORT).show()
-                    data.remove(data[position])
-                    notifyDataSetChanged()
                 }
 
                 data[position].groupID?.let { id ->
@@ -70,6 +68,9 @@ class RequestsAdapter : VortexBaseAdapter<RequestsAdapter.Holder>() {
                                     trans.put("members", result)
                                     FirebaseFirestore.getInstance().collection("groups")
                                             .document(id).update(trans)
+
+                                    data.remove(data[position])
+                                    notifyDataSetChanged()
                                 }
                             }
                 }
