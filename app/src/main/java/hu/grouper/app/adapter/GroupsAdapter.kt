@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
 import hu.grouper.app.R
-import hu.grouper.app.data.models.JoinRequest
 import hu.grouper.app.data.models.Group
+import hu.grouper.app.data.models.JoinRequest
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.utils.random.VortexBaseAdapter
 import kotlinx.android.synthetic.main.row_group.view.*
@@ -28,7 +28,8 @@ import java.util.*
  * Time : 1:38 PM
  */
 
-class GroupsAdapter(private val listener: GroupListener) : VortexBaseAdapter<GroupsAdapter.Holder>() {
+class GroupsAdapter(private val listener: GroupListener) :
+    VortexBaseAdapter<GroupsAdapter.Holder>() {
 
     private val items = ArrayList<Group>()
 
@@ -81,9 +82,10 @@ class GroupsAdapter(private val listener: GroupListener) : VortexBaseAdapter<Gro
                 updateDialog.setCancelable(true)
                 updateDialog.setContentView(R.layout.dialog_add_user_to_group)
                 val lWindowParams = WindowManager.LayoutParams()
-                lWindowParams.copyFrom(updateDialog.window.attributes)
-                lWindowParams.width = WindowManager.LayoutParams.FILL_PARENT; // this is where the magic happens
-                lWindowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                lWindowParams.copyFrom(updateDialog.window?.attributes)
+                lWindowParams.width =
+                    WindowManager.LayoutParams.FILL_PARENT // this is where the magic happens
+                lWindowParams.height = WindowManager.LayoutParams.WRAP_CONTENT
                 updateDialog.window?.let {
                     it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                     it.attributes = lWindowParams
@@ -115,7 +117,7 @@ class GroupsAdapter(private val listener: GroupListener) : VortexBaseAdapter<Gro
             val userId = VortexPrefs.get("UserID", "") as String
             val id = UUID.randomUUID().toString()
             FirebaseFirestore.getInstance().collection("requests")
-                    .document().set(
+                .document().set(
                     JoinRequest(
                         id = id,
                         name = name,
@@ -123,10 +125,10 @@ class GroupsAdapter(private val listener: GroupListener) : VortexBaseAdapter<Gro
                         groupID = items[position].id
                     )
                 ).addOnCompleteListener {
-                        GlobalScope.launch {
-                            listener.onGroupSuccess()
-                        }
+                    GlobalScope.launch {
+                        listener.onGroupSuccess()
                     }
+                }
         }
     }
 

@@ -2,10 +2,7 @@ package hu.grouper.app.fragment
 
 import android.view.View
 import hu.grouper.app.R
-import hu.grouper.app.screens.AboutUsScreen
-import hu.grouper.app.screens.ChatScreen
-import hu.grouper.app.screens.MeetingRoomScreen
-import hu.grouper.app.screens.RequestsScreen
+import hu.grouper.app.screens.*
 import io.vortex.android.prefs.VortexPrefs
 import io.vortex.android.ui.fragment.VortexBaseFragment
 import kotlinx.android.synthetic.main.fragment_options.*
@@ -31,6 +28,14 @@ class OptionsFragment : VortexBaseFragment() {
             it.setOnClickListener {
                 GlobalScope.launch {
                     startScreen<MeetingRoomScreen>(false)
+                }
+            }
+        }
+
+        JoinGroupsButton?.apply {
+            this.setOnClickListener {
+                GlobalScope.launch {
+                    startScreen<SubmitRequestsScreen>(false)
                 }
             }
         }
