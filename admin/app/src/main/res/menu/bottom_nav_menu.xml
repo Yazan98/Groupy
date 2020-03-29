@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Home"
+        android:icon="@drawable/home"
+        android:title="Home"/>
+
+    <item
+        android:id="@+id/Tasks"
+        android:icon="@drawable/taskss"
+        android:title="Tasks"/>
+
+    <item
+        android:id="@+id/Encryption"
+        android:title="Options"
+        android:icon="@drawable/ic_mail"/>
+
+    <item
+        android:id="@+id/Profile"
+        android:icon="@drawable/account"
+        android:title="Profile"/>
+
+</menu>
