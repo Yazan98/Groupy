@@ -1,8 +1,9 @@
-package com.yazan98.groupyadmin
+package com.yazan98.groupyadmin.screens
 
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import com.yazan98.groupyadmin.R
 import com.yazan98.groupyadmin.logic.ProfileRepository
 import com.yazan98.groupyadmin.models.Profile
 import io.vortex.android.prefs.VortexPrefs
@@ -86,10 +87,12 @@ class RegisterScreen : VortexScreen() {
             profile.name?.let {
                 VortexPrefs.put("Name", it)
             }
+            VortexPrefs.put("UserStatus", true)
 //            VortexPrefs.put("UserStatus" , true)
             VortexMessageDelegation().showShortMessage("Welcome To Grouper", this@RegisterScreen)
 
             withContext(Dispatchers.Main) {
+                VortexPrefs.put("UserStatus", true)
                 startActivity(Intent(this@RegisterScreen, MainScreen::class.java))
                 finish()
             }

@@ -1,7 +1,8 @@
-package com.yazan98.groupyadmin
+package com.yazan98.groupyadmin.screens
 
 import android.os.Bundle
 import android.view.View
+import com.yazan98.groupyadmin.R
 import com.yazan98.groupyadmin.logic.ProfileRepository
 import com.yazan98.groupyadmin.models.LoginModel
 import com.yazan98.groupyadmin.models.Profile
@@ -71,7 +72,6 @@ class LoginScreen : VortexScreen() {
             override suspend fun onOperationSuccess(profile: Profile) {
                 hideLoading()
                 profile.id?.let { VortexPrefs.put("UserID", it) }
-                VortexPrefs.put("UserStatus", true)
                 profile.accountType?.let { VortexPrefs.put("AccountType", it) }
                 VortexMessageDelegation().showShortMessage("Welcome To Grouper", this@LoginScreen)
                 profile.groupID?.let {
@@ -82,7 +82,15 @@ class LoginScreen : VortexScreen() {
                     VortexPrefs.put("Name", it)
                 }
 
-                startScreen<MainScreen>(true)
+                if (profile.accountType.equals("PROFESSOR")) {
+                    VortexPrefs.put("UserStatus", true)
+                    startScreen<MainScreen>(true)
+                } else {
+                    VortexMessageDelegation().showShortMessage(
+                        "You Can't Enter The Application Students Not Allowed",
+                        this@LoginScreen
+                    )
+                }
             }
         }
 
