@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -46,15 +44,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
         <Button
+            android:id="@+id/SubmitIdeaButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_btn"
-            android:id="@+id/SubmitIdeaButton"
             android:text="Submit Project Idea"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
         <Button
+            android:id="@+id/ShowIdeasButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -64,15 +63,17 @@
             android:textColor="@color/white" />
 
         <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/bg_btn"
-        android:text="Search About Group Information"
-        android:textAllCaps="false"
-        android:textColor="@color/white" />
+            android:id="@+id/SearchGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_btn"
+            android:text="Search About Group Information"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
         <Button
+            android:id="@+id/ViewProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"

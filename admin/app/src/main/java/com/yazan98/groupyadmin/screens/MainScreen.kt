@@ -17,6 +17,24 @@ class MainScreen : AppCompatActivity() {
                 startActivity(Intent(this@MainScreen, SubmitIdeaScreen::class.java))
             }
         }
+
+        ShowIdeasButton?.apply {
+            this.setOnClickListener {
+                startActivity(Intent(this@MainScreen, IdeasScreen::class.java))
+            }
+        }
+
+        ViewProfile?.apply {
+            this.setOnClickListener {
+                startActivity(Intent(this@MainScreen, ProfileScreen::class.java))
+            }
+        }
+
+        SearchGroup?.apply {
+            this.setOnClickListener {
+                startActivity(Intent(this@MainScreen, SearchGroupScreen::class.java))
+            }
+        }
     }
 
 }
