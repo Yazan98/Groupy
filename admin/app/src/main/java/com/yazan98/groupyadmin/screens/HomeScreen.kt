@@ -13,20 +13,37 @@ import com.yazan98.groupyadmin.adapter.HomeMembersAdapter
 import com.yazan98.groupyadmin.models.Profile
 import com.yazan98.groupyadmin.models.Task
 import io.vortex.android.prefs.VortexPrefs
+import io.vortex.android.ui.activity.VortexScreen
 import kotlinx.android.synthetic.main.screen_home_group.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class HomeScreen : AppCompatActivity() {
+class HomeScreen : VortexScreen() {
 
     var length = 1
     private var tasks = ArrayList<Task>()
     private val homeAdapter: HomeMembersAdapter by lazy {
         HomeMembersAdapter(object : HomeMembersAdapter.Listener {
-            override fun onClick(profile: Profile) = Unit
+            override fun onClick(profile: Profile) {
+                GlobalScope.launch {
+                    startScreen<ExternalProfileScreen>(false) {
+                        putExtra("name", profile.name)
+                        putExtra("email", profile.email)
+                        putExtra("id", profile.id)
+                        putExtra("bio", profile.bio)
+                        putExtra("accountType", profile.accountType)
+                        putExtra("lat", profile.lat)
+                        putExtra("lng", profile.lng)
+                    }
+                }
+            }
         })
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.screen_home_group
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +52,7 @@ class HomeScreen : AppCompatActivity() {
 
         HomeToolbar?.let {
             this.setSupportActionBar(it)
+            this.supportActionBar?.title = ""
         }
 
         GlobalScope.launch {
@@ -84,8 +102,10 @@ class HomeScreen : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val intent = Intent(this, TasksScreen::class.java)
-        intent.putExtra("ID", intent?.extras?.getString("ID"))
+        GlobalScope.launch {
+            intent?.extras?.getString("ID")?.let { VortexPrefs.put("GroupID", it) }
+        }
+        val intent = Intent(this, TasksContainerScreen::class.java)
         startActivity(intent)
         return super.onOptionsItemSelected(item)
     }

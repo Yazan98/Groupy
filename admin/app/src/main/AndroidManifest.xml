@@ -27,6 +27,9 @@
         <activity android:name=".screens.ProfileScreen" />
         <activity android:name=".screens.SearchGroupScreen" />
         <activity android:name=".screens.HomeScreen" />
+        <activity android:name=".screens.TasksContainerScreen"/>
+        <activity android:name=".screens.NewTaskScreen" />
+        <activity android:name=".screens.ExternalProfileScreen" />
     </application>
 
 </manifest>

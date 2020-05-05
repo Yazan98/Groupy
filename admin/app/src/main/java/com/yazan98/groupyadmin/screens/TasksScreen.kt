@@ -24,16 +24,11 @@ class TasksScreen : VortexBaseFragment() {
         return R.layout.screen_tasks
     }
 
-    @SuppressLint("WrongConstant")
     override fun initScreen(view: View) {
-
-        GlobalScope.launch {
-            VortexPrefs.get("AccountType", "")?.also {
-                (it as String).let {
-                    if (it.equals("ADMIN")) {
-                        show()
-                    }
-                }
+        attachmentButton?.setOnClickListener {
+            GlobalScope.launch {
+                println("SSSTART")
+                startScreen<NewTaskScreen>(false)
             }
         }
 
@@ -47,8 +42,6 @@ class TasksScreen : VortexBaseFragment() {
 
         GlobalScope.launch {
             val groupID = VortexPrefs.get("GroupID", "") as String
-            val type = VortexPrefs.get("AccountType", "") as String
-            val userID = VortexPrefs.get("UserID", "") as String
             FirebaseFirestore.getInstance().collection("tasks")
                 .whereEqualTo("groupId", groupID)
                 .get().addOnCompleteListener {
@@ -57,53 +50,23 @@ class TasksScreen : VortexBaseFragment() {
                             FirebaseFirestore.getInstance().collection("tasks")
                                 .document(doc.id).get().addOnCompleteListener {
                                     it.result?.let {
-                                        if (type.equals("ADMIN")) {
-                                            list.add(
-                                                Task(
+                                        list.add(
+                                            Task(
                                                 id = it.getString("id"),
                                                 userId = it.getString("userId"),
                                                 status = it.getString("status"),
                                                 groupId = it.getString("groupId"),
                                                 name = it.getString("name")
                                             )
-                                            )
-                                        } else {
-                                            if (userID.equals(it.getString("userId"))) {
-                                                list.add(Task(
-                                                    id = it.getString("id"),
-                                                    userId = it.getString("userId"),
-                                                    status = it.getString("status"),
-                                                    groupId = it.getString("groupId"),
-                                                    name = it.getString("name")
-                                                ))
-                                            }
-                                        }
+                                        )
                                     }
                                 }
                         }
                     }
                 }
         }
-
-
-
-        AddNewTask?.apply {
-            this.setOnClickListener {
-                GlobalScope.launch {
-//                    startScreen<NewTaskScreen>(false)
-                }
-            }
-        }
     }
 
-    @SuppressLint("RestrictedApi")
-    private suspend fun show() {
-        withContext(Dispatchers.Main) {
-            AddNewTask?.let {
-                it.visibility = View.VISIBLE
-            }
-        }
-    }
 
     override fun onStop() {
         super.onStop()
