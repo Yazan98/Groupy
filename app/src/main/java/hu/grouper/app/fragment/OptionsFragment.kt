@@ -64,6 +64,14 @@ class OptionsFragment : VortexBaseFragment() {
             }
         }
 
+        AssignGroup?.apply {
+            this.setOnClickListener {
+                GlobalScope.launch {
+                    startScreen<AssignTaskScreen>(false)
+                }
+            }
+        }
+
         GlobalScope.launch {
             VortexPrefs.get("AccountType", "")?.let {
                 if (it.equals("ADMIN")) {

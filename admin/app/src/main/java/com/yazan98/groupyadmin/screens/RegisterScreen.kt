@@ -89,7 +89,7 @@ class RegisterScreen : VortexScreen() {
             }
             VortexPrefs.put("UserStatus", true)
 //            VortexPrefs.put("UserStatus" , true)
-            VortexMessageDelegation().showShortMessage("Welcome To Grouper", this@RegisterScreen)
+            VortexMessageDelegation().showShortMessage("Welcome To Groupey", this@RegisterScreen)
 
             withContext(Dispatchers.Main) {
                 VortexPrefs.put("UserStatus", true)

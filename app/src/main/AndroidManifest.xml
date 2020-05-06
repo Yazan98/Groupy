@@ -54,13 +54,14 @@
         <activity android:name=".screens.ChatScreen"/>
         <activity android:name=".screens.RequestsScreen" />
         <activity android:name=".screens.SubmitRequestsScreen" />
+        <activity android:name=".screens.AssignTaskScreen" />
 
         <service android:name=".LocationUpdatesService"
             android:enabled="true"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDDLwpuTUhYm-XZ1-2z6gPTYCykPCcrKYw" />
+            android:value="AIzaSyAldOjx_vbdDtKbPckdTjCv0mONRcStfaY" />
 
     </application>
 
